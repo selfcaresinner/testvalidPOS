@@ -1,0 +1,150 @@
+<Window x:Class="PosCore.Views.ReturnsWindow"
+        xmlns:local="clr-namespace:PosCore.Views"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Devoluciones y Notas de Crédito" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner">
+        <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <Grid Background="#F3F4F6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" Padding="20" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Devoluciones de Órdenes" FontSize="24" FontWeight="Bold" Foreground="#111827" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Command="{Binding LoadOrdersCommand}" Content="Actualizar Lista" Padding="15,8" Background="#3B82F6" Foreground="White" BorderThickness="0" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <!-- Orders List -->
+        <Border Grid.Row="1" Margin="20" Background="White" CornerRadius="8" Padding="20">
+            <DataGrid ItemsSource="{Binding RecentOrders}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" HeadersVisibility="Column" Background="Transparent" BorderThickness="0" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E5E7EB">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F9FAFB"/>
+                        <Setter Property="Foreground" Value="#6B7280"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="10,12"/>
+                    </Style>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="10,12"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.Resources>
+                
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Border Background="#F9FAFB" Padding="15" Margin="5" CornerRadius="4" BorderBrush="#E5E7EB" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Artículos de la Orden:" FontWeight="Bold" Margin="0,0,0,10" Foreground="#374151"/>
+                                <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" Background="White" BorderBrush="#E5E7EB" BorderThickness="1" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#F3F4F6">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Producto" Binding="{Binding Product.Name}" Width="2*"/>
+                                        <DataGridTextColumn Header="Cant." Binding="{Binding Quantity}" Width="*"/>
+                                        <DataGridTextColumn Header="Precio Unit." Binding="{Binding UnitPrice, StringFormat=C}" Width="*"/>
+                                        <DataGridTextColumn Header="Subtotal" Binding="{Binding SubTotal, StringFormat=C}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,15,0,0" Visibility="{Binding IsReturned, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="Motivo de Devolución: " FontWeight="SemiBold" Foreground="#991B1B"/>
+                                    <TextBlock Text="{Binding ReturnReason}" Foreground="#991B1B" Margin="0,0,20,0"/>
+                                    <TextBlock Text="Autorizado por: " FontWeight="SemiBold" Foreground="#991B1B"/>
+                                    <TextBlock Text="{Binding AuthorizedBy}" Foreground="#991B1B"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80"/>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding OrderDate, StringFormat='dd/MM/yyyy HH:mm'}" Width="150"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding TotalAmount, StringFormat='C'}" Width="120"/>
+                    
+                    <DataGridTemplateColumn Header="Estado" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Padding="8,4" CornerRadius="4" HorizontalAlignment="Left" x:Name="StatusBorder" Background="#D1FAE5">
+                                    <TextBlock x:Name="StatusText" Text="Completada" Foreground="#065F46" FontWeight="Medium"/>
+                                </Border>
+                                
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsReturned}" Value="True">
+                                        <Setter TargetName="StatusText" Property="Text" Value="Devuelta"/>
+                                        <Setter TargetName="StatusText" Property="Foreground" Value="#991B1B"/>
+                                        <Setter TargetName="StatusBorder" Property="Background" Value="#FEE2E2"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Acciones" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="BtnReturn" Content="Devolver Todo" 
+                                            Command="{Binding DataContext.ReturnOrderCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            CommandParameter="{Binding}"
+                                            Padding="10,6" Background="#EF4444" Foreground="White" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Left" Margin="0,0,5,0"/>
+                                    <Button x:Name="BtnPartialReturn" Content="Devolver Parcial" 
+                                            Command="{Binding DataContext.PartialReturnOrderCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            CommandParameter="{Binding}"
+                                            Padding="10,6" Background="#F59E0B" Foreground="White" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Left" Margin="0,0,5,0"/>
+                                    
+                                    <Button x:Name="BtnReprint" Content="Ticket" 
+                                            Command="{Binding DataContext.ReprintOrderCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            CommandParameter="{Binding}"
+                                            Padding="10,6" Background="#3B82F6" Foreground="White" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Left" Margin="0,0,5,0"/>
+                                    
+                                    <Button x:Name="BtnReprintReturn" Content="Nota Crédito" 
+                                            Command="{Binding DataContext.ReprintReturnCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            CommandParameter="{Binding}"
+                                            Padding="10,6" Background="#8B5CF6" Foreground="White" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                                </StackPanel>
+
+                                
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsReturned}" Value="True">
+                                        <Setter TargetName="BtnReturn" Property="IsEnabled" Value="False"/>
+                                        <Setter TargetName="BtnReturn" Property="Background" Value="#E5E7EB"/>
+                                        <Setter TargetName="BtnReturn" Property="Foreground" Value="#9CA3AF"/>
+                                        <Setter TargetName="BtnPartialReturn" Property="IsEnabled" Value="False"/>
+                                        <Setter TargetName="BtnPartialReturn" Property="Background" Value="#E5E7EB"/>
+                                        <Setter TargetName="BtnPartialReturn" Property="Foreground" Value="#9CA3AF"/>
+                                        <Setter TargetName="BtnReprintReturn" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Window>

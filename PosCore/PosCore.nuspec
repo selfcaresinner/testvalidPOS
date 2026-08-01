@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>PosCore</id>
+    <version>1.0.0</version>
+    <title>Super POS Express</title>
+    <authors>Tu Empresa</authors>
+    <owners>Tu Empresa</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Sistema de Punto de Venta moderno e inteligente.</description>
+    <releaseNotes>Versión inicial.</releaseNotes>
+  </metadata>
+  <files>
+    <file src="publish\**\*.*" target="lib\net8.0-windows\" exclude="**\*.pdb" />
+  </files>
+</package>

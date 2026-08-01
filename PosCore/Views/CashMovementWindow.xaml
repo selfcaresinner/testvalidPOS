@@ -1,0 +1,38 @@
+<Window x:Class="PosCore.Views.CashMovementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Movimiento de Caja" Height="400" Width="450"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Registrar Movimiento" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <RadioButton x:Name="RadioEntrada" Content="Entrada (Ingreso)" IsChecked="True" FontSize="16" Margin="0,0,20,0" Checked="RadioType_Checked"/>
+            <RadioButton x:Name="RadioSalida" Content="Salida (Sangría/Retiro)" FontSize="16" Checked="RadioType_Checked"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="Monto ($):" FontSize="16" Margin="0,0,0,5"/>
+        <TextBox x:Name="AmountBox" Grid.Row="3" FontSize="20" Padding="5" Margin="0,0,0,15"/>
+
+        <TextBlock Grid.Row="4" Text="Motivo:" FontSize="16" Margin="0,0,0,5" VerticalAlignment="Top"/>
+        <TextBox x:Name="ReasonBox" Grid.Row="4" FontSize="16" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,30,0,20"/>
+
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Cancelar" Grid.Column="0" Height="45" Margin="0,0,5,0" Background="#E5E7EB" BorderThickness="0" Click="BtnCancel_Click" FontSize="16"/>
+            <Button Content="Guardar" Grid.Column="1" Height="45" Margin="5,0,0,0" Background="#3B82F6" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnSave_Click" FontSize="16" IsDefault="True"/>
+        </Grid>
+    </Grid>
+</Window>

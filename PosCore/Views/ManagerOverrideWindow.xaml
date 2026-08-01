@@ -1,0 +1,29 @@
+<Window x:Class="PosCore.Views.ManagerOverrideWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Autorización de Gerente - POS Express" Height="400" Width="450"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Background="#F3F4F6">
+    <Grid Margin="20">
+        <Border Background="White" CornerRadius="12" Padding="30" BorderBrush="#E5E7EB" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="10" ShadowDepth="1" Opacity="0.05" />
+            </Border.Effect>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Autorización Requerida" FontSize="22" FontWeight="Bold" Foreground="#1F2937" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                
+                <Border Background="#FEF2F2" BorderBrush="#F87171" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,25">
+                    <TextBlock x:Name="ActionDescText" Text="Acción: ..." FontSize="14" Foreground="#991B1B" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                </Border>
+                
+                <TextBlock Text="PIN de Administrador" FontSize="14" FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,0,8" HorizontalAlignment="Center"/>
+                
+                <PasswordBox x:Name="PinBox" Height="45" Margin="0,0,0,30" Padding="10,0" FontSize="20" HorizontalContentAlignment="Center" Background="#F9FAFB" BorderBrush="#D1D5DB" BorderThickness="1"/>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Cancelar" Width="120" Height="45" Margin="0,0,15,0" Background="#E5E7EB" Foreground="#374151" FontSize="16" FontWeight="SemiBold" BorderThickness="0" Click="BtnCancel_Click" Cursor="Hand"/>
+                    <Button Content="Autorizar" Width="140" Height="45" Background="#10B981" Foreground="White" FontSize="16" FontWeight="Bold" BorderThickness="0" Click="BtnAuthorize_Click" IsDefault="True" Cursor="Hand"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

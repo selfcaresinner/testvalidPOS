@@ -1,0 +1,32 @@
+<Window x:Class="PosCore.Views.SuspendedOrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Órdenes Suspendidas" Height="400" Width="600"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Background="White" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="Órdenes en Espera" FontSize="20" FontWeight="Bold" Foreground="#111827" Margin="0,0,0,15"/>
+        
+        <ListView x:Name="OrdersList" Grid.Row="1" Margin="0,0,0,15" BorderThickness="1" BorderBrush="#E5E7EB">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Count, StringFormat='Orden con {0} artículos'}" FontSize="16" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" Content="Retomar" Width="100" Height="30" Background="#10B981" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BtnResume_Click" Tag="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <Button Grid.Row="2" Content="Cerrar" Width="100" Height="35" HorizontalAlignment="Right" Background="#E5E7EB" BorderThickness="0" Click="BtnClose_Click"/>
+    </Grid>
+</Window>
